@@ -13,11 +13,7 @@ def solution(skill, skill_trees):
         checkingList.append(checking)
         
     for i in checkingList:
-        answerCheck = True
-        for ch in i:
-            if i.index(ch) != skill.index(ch):
-                answerCheck = False
-        if answerCheck:
-            answer +=1
+        if i == skill[0:len(i)]:
+            answer+=1
         
     return answer
