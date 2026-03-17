@@ -1,27 +1,23 @@
 def solution(n):
-    num = 1
-    groups = []
-    x,y =-1,0
-    
-    # 2차원으로 채우기
-    groups = [[0] * i for i in range(1, n + 1)]
-    
+    answer = []
+    group = [[0] * i for i in range(1,n+1)]
+    x, y = -1 , 0
+    cur_num = 1
+
     for i in range(n):
-        for _ in range(i,n):
+        for j in range(i,n):
             if i%3 == 0:
-                x +=1
-                
-            elif i % 3 ==1:
-                y +=1
-                
+                x+=1
+            elif i%3 == 1:
+                y+=1
             else:
                 x-=1
                 y-=1
                 
-            groups[x][y] = num
-            num+=1
-            
-    answer = []
-    for row in groups:
-        answer.extend(row)
+            group[x][y] = cur_num
+            cur_num +=1
+    
+    for i in group:
+        answer.extend(i)
+        
     return answer
