@@ -1,18 +1,33 @@
 def solution(m, n, puddles):
-    answer = 0
+    dp = [[0] * m for _ in range(n)]
     MOD = 1000000007
-    dp = [[0 for _ in range(m)] for _ in range(n)]
     dp[0][0] = 1
+    check = False
     
-    for y in range(n):
-        for x in range(m):
-            if [x+1, y+1] in puddles:
-                dp[y][x] = 0
-                continue
-            if x == 0 and y == 0:
-                continue
-            left = dp[y][x-1] if x > 0 else 0
-            up = dp[y-1][x] if y > 0 else 0
-            dp[y][x] = (left + up) % MOD
+    for i in range(m):
+        if [i+1,1] in puddles:
+            check = True
+            dp[0][i] = 0
+        elif not check:
+            dp[0][i] = 1
+        elif check:
+            dp[0][i] = 0
+            
+    check = False
+    
+    for j in range(n):
+        if [1,j+1] in puddles:
+            check = True
+            dp[j][0] = 0
+        elif not check:
+            dp[j][0] = 1
+        elif check:
+            dp[j][0] = 0
+        
+    for i in range(1,n):
+        for j in range(1,m):
+            dp[i][j] = (dp[i-1][j] + dp[i][j-1]) % MOD
+            if [j+1,i+1] in puddles:
+                dp[i][j] = 0
         
     return dp[n-1][m-1]
