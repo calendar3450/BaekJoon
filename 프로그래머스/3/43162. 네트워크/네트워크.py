@@ -1,19 +1,19 @@
 def solution(n, computers):
     answer = 0
-    nodes = [False for _ in range(len(computers))]
+    check = [False] * n
     
-    def DFS(cur_pos):
-        if nodes[cur_pos]:
+    def DFS(cur):
+        if check[cur]:
             return
         
-        nodes[cur_pos] = True
+        check[cur] = True
         
-        for i in range(len(computers)):
-            if computers[cur_pos][i] == 1:
+        for i in range(n):
+            if computers[cur][i] == 1:
                 DFS(i)
-        
-    for i in range(len(computers)):
-        if not nodes[i]:
+                
+    for i in range(n):
+        if not check[i]:
             DFS(i)
             answer+=1
             
