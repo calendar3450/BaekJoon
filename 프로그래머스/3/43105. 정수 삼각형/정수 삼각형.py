@@ -1,15 +1,24 @@
 def solution(triangle):
-    n = len(triangle)
-    dp = [[0]*len(triangle[i]) for i in range(n)]
+    answer = 0
+    dp = []
+    height = len(triangle)
+    
+    for i in range(height):
+        dp1=[0]*len(triangle[i])
+        dp.append(dp1)
+    
     dp[0][0] = triangle[0][0]
     
-    for i in range(1,n):
-        for j in range(i+1):
-            if j == 0 :
-                dp[i][j] = dp[i-1][0] + triangle[i][j]
-            elif j == i:
-                dp[i][j] = dp[i-1][j-1] + triangle[i][j]
+    for j in range(1,height):
+        for h in range(len(triangle[j])):
+            # 처음과 마지막 사이.
+            if h > 0 and h < len(triangle[j])-1:
+                dp[j][h] = max(dp[j-1][h],dp[j-1][h-1]) + triangle[j][h]
+            # 그 층의 마지막 수   
+            elif h == len(triangle[j])-1:
+                dp[j][h] = dp[j-1][h-1] + triangle[j][h]
+            # h == 0 일때 즉, 그 층의 첫번째일때
             else:
-                dp[i][j] = max(dp[i-1][j-1],dp[i-1][j]) + triangle[i][j]
+                dp[j][h] = dp[j-1][h] + triangle[j][h]
     
     return max(dp[-1])
