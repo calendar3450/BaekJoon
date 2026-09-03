@@ -2,21 +2,17 @@ import heapq
 
 def solution(scoville, K):
     answer = 0
-    heap = []
-    n = len(scoville)
+    heapq.heapify(scoville)
     
-    for i in scoville:
-        heapq.heappush(heap,i)
-    
-    while  heap[0] <K and len(heap) > 1:
-        a = heapq.heappop(heap)
-        b = heapq.heappop(heap)
-        mixed = a+(b*2)
+    while scoville[0] < K and len(scoville)>=2:
+        a = heapq.heappop(scoville)
+        b = heapq.heappop(scoville)
+        sum_ab = a + (b*2)
         
-        heapq.heappush(heap,mixed)
+        heapq.heappush(scoville,sum_ab)
         answer +=1
-        
-    if len(heap) == 1 and heap[0] <K:
-        return -1
     
-    return answer
+    if len(scoville) == 1 and scoville[0] <K:
+        return -1
+    else:
+        return answer
