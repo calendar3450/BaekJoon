@@ -3,19 +3,13 @@ def solution(n, s):
     if n> s:
         return [-1]
     
-    divided = s//n
-    rest  = s%n
-    
-    tmp = [divided for _ in range(n)]
-    print(tmp)
-    
-    for i in range(n):
-        if rest == 0:
-            break
-        else:
-            tmp[i] +=1
-            rest -=1
+    if s%n == 0:
+        answer = [s//n for i in range(n)]
+    else:
+        answer = [s//n for i in range(n)]
+        rest = s%n
+        for j in range(rest):
+            answer[j] +=1
             
-    tmp.sort()
-    
-    return tmp
+    answer.sort()
+    return answer
