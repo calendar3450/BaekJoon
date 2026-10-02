@@ -1,40 +1,47 @@
 from collections import deque
 
 def solution(board):
-    row = len(board)
-    col = len(board[0])
-    
-    for i in range(row):
-        for j in range(col):
-            if board[i][j] == 'R':
-                rx = j
-                ry =i
-            if board[i][j] == 'G':
-                gx = j
-                gy = i
-                
-    if 0 <gx< col-1 and 0 <gy < row-1 and board[gy][gx+1] == '.' and board[gy][gx-1] == '.' and board[gy+1][gx] == '.' and board[gy-1][gx] == '.':
-        return -1
-    
-    visited = [[False]*col for _ in range(row)]
-    visited[ry][rx] = True
-    queue = deque([(rx,ry,0)])
-    
+    directions = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+    rows = len(board)
+    cols = len(board[0])
+
+    # 시작 위치: (행, 열)
+    for r in range(rows):
+        for c in range(cols):
+            if board[r][c] == 'R':
+                sr, sc = r, c
+
+    queue = deque([(sr, sc, 0)])
+    visited = {(sr, sc)}
+
     while queue:
-        x,y,cnt = queue.popleft()
-        
-        if board[y][x] == 'G':
-            return cnt
-        
-        for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
-            ny,nx = y,x
-            
-            while 0<= ny+dy < row and 0<= nx+dx < col and board[ny+dy][nx+dx] != 'D':
-                ny += dy
-                nx += dx
-                
-            if not visited[ny][nx]:
-                visited[ny][nx] = True
-                queue.append((nx,ny,cnt+1))
-        
+        r, c, move = queue.popleft()
+
+        if board[r][c] == 'G':
+            return move
+
+        for dr, dc in directions:
+            # 각 방향의 출발점은 현재 위치
+            nr, nc = r, c
+
+            while True:
+                next_r = nr + dr
+                next_c = nc + dc
+
+                # 다음 칸이 보드 밖이면 현재 위치에서 멈춤
+                if not (0 <= next_r < rows and
+                        0 <= next_c < cols):
+                    break
+
+                # 다음 칸이 장애물이면 현재 위치에서 멈춤
+                if board[next_r][next_c] == 'D':
+                    break
+
+                # 이동 가능한 경우에만 좌표 변경
+                nr, nc = next_r, next_c
+
+            if (nr, nc) not in visited:
+                visited.add((nr, nc))
+                queue.append((nr, nc, move + 1))
+
     return -1
