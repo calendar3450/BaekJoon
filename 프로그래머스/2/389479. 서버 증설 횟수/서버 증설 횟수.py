@@ -1,21 +1,13 @@
-from collections import deque
 def solution(players, m, k):
     answer = 0
-    queue = deque()
-    total_server = len(queue)
-    tick = 0
-
+    cur_server = [0] * 50
     
-    for player in players:
-        tick +=1
-        
-        if not(player < m*total_server + m):
-            for i in range((player // m) - total_server):
-                queue.append(tick+k-1)
-                answer +=1
-        while queue and queue[0] == tick:
-            queue.popleft()
-        
-        total_server = len(queue)
-        
+    for i in range(24):
+        # 증설 해야 하는 경우
+        if players[i] >= (cur_server[i] + 1) * m:
+            added = (players[i] // m) - cur_server[i]
+            for j in range(k):
+                cur_server[i+j] += added
+            answer += added
+            
     return answer
